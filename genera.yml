@@ -1,0 +1,11 @@
+---
+- hosts: genera
+  become: yes
+  roles:
+    - genera_user
+    - genera_home
+    - genera_inetd
+    - genera_nfs
+    - genera_virtual_network
+    - genera_x11
+    - var_lib_symbolics

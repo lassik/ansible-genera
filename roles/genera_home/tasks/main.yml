@@ -1,0 +1,41 @@
+---
+- name: Make genera directory
+  file:
+    path={{genera_home}}/
+    state=directory
+    owner={{genera_user}}
+    group={{genera_group}}
+    mode=0755
+
+- name: Copy genera file
+  copy:
+    dest={{genera_home}}/
+    src=genera
+    owner={{genera_user}}
+    group={{genera_group}}
+    mode=0755
+
+- name: Copy VLM_debugger file
+  copy:
+    dest={{genera_home}}/
+    src=VLM_debugger
+    owner={{genera_user}}
+    group={{genera_group}}
+    mode=0644
+
+- name: Ensure VLOD file exists
+  copy:
+    dest={{genera_home}}/genera.vlod
+    src=Genera-8-5-xlib-patched.vlod
+    owner={{genera_user}}
+    group={{genera_group}}
+    mode=0644
+    force=no
+
+- name: Create .VLM file based on template
+  template:
+    dest={{genera_home}}/.VLM
+    src=dot.VLM.j2
+    owner={{genera_user}}
+    group={{genera_group}}
+    mode=0644

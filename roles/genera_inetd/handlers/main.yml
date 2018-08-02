@@ -1,0 +1,5 @@
+---
+- name: Restart inetd
+  service:
+    name: inetutils-inetd
+    state: restarted

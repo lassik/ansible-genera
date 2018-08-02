@@ -1,0 +1,13 @@
+---
+- name: Install xhost utility
+  apt:
+    name: x11-xserver-utils
+    update_cache: yes
+
+- name: Install startx utility
+  apt:
+    name: xinit
+
+- name: Install Xephyr X server for old X protocol compat
+  apt:
+    name: xserver-xephyr

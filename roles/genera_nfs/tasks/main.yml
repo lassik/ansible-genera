@@ -1,0 +1,32 @@
+---
+- name: Install NFS
+  apt:
+    name: "{{item}}"
+    update_cache: yes
+  with_items:
+    - nfs-common
+    - nfs-kernel-server
+
+- name: Create /etc/exports based on template
+  template:
+    dest=/etc/exports
+    src=exports.j2
+    owner=0
+    group=0
+    mode=0644
+    backup=yes
+  notify: Restart NFS
+
+- name: Enable old version 2 of NFS protocol (part 1)
+  lineinfile:
+    dest=/etc/default/nfs-kernel-server
+    regexp='^RPCNFSDCOUNT='
+    line='RPCNFSDCOUNT="-V 2 8"'
+  notify: Restart NFS
+
+- name: Enable old version 2 of NFS protocol (part 2)
+  lineinfile:
+    dest=/etc/default/nfs-kernel-server
+    regexp='^RPCMOUNTDOPTS='
+    line='RPCMOUNTDOPTS="-V2 --manage-gids"'
+  notify: Restart NFS

@@ -1,0 +1,25 @@
+---
+- name: Install inetd
+  apt:
+    name: inetutils-inetd
+    update_cache: yes
+
+- name: Set up /etc/inetd.conf (TCP)
+  lineinfile:
+    dest=/etc/inetd.conf
+    regexp="^{{item}}\s+stream"
+    line="{{item}} stream tcp nowait root internal"
+  with_items:
+    - time
+    - daytime
+  notify: Restart inetd
+
+- name: Set up /etc/inetd.conf (UDP)
+  lineinfile:
+    dest=/etc/inetd.conf
+    regexp="^{{item}}\s+dgram"
+    line="{{item}} dgram udp wait root internal"
+  with_items:
+    - time
+    - daytime
+  notify: Restart inetd

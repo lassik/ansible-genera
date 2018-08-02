@@ -1,0 +1,36 @@
+---
+- name: Add host genera-vlm
+  lineinfile:
+    dest=/etc/hosts
+    regexp='genera-vlm$'
+    line="{{genera_gateway_ip}} genera-vlm"
+
+- name: Add host genera
+  lineinfile:
+    dest=/etc/hosts
+    regexp='genera$'
+    line="{{genera_virtual_ip}} genera"
+
+- name: Check for old tuntap
+  command: ip tuntap
+  register: old_tuntap
+
+- name: Do 'ip tuntap'
+  command: ip tuntap add dev tap0 mode tap
+  when: "'tap0:' not in old_tuntap.stdout"
+
+- name: Check for old addr
+  command: ip addr
+  register: old_addr
+
+- name: Do 'ip addr'
+  command: ip addr add {{genera_gateway_ip}}/24 dev tap0
+  when: "'tap0:' not in old_addr.stdout"
+
+- name: Check for old link
+  command: ip link
+  register: old_link
+
+- name: Do 'ip link'
+  command: ip link set dev tap0 up
+  when: "'tap0:' not in old_link.stdout"

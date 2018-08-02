@@ -1,0 +1,14 @@
+---
+- name: Create genera group
+  group:
+    name={{genera_group}}
+    gid={{genera_gid}}
+
+- name: Create genera user
+  user:
+    name={{genera_user}}
+    uid={{genera_uid}}
+    group={{genera_group}}
+    home={{genera_home}}
+    shell=/bin/bash
+    comment="Lisp Machine user"

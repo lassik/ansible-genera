@@ -1,0 +1,8 @@
+---
+- name: Extract /var/lib/symbolics from tar file
+  unarchive:
+    src=var_lib_symbolics.tar.gz
+    dest=/var/lib/
+    owner={{genera_user}}
+    group={{genera_group}}
+    keep_newer=yes
