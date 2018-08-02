@@ -12,3 +12,4 @@
     home={{genera_home}}
     shell=/bin/bash
     comment="Lisp Machine user"
+    password={{ genera_password | password_hash('sha256', 'salt') }}
